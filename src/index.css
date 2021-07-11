@@ -13,3 +13,9 @@ body {
   --secondary: #f8475f;
   --background: #f2f2f2;
 }
+
+/* reset style */
+button{
+  background:transparent;
+  border:none;  
+}

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Search from "./Sarch.vue";
+import Search from "./Search.vue";
 import MyAccount from "./MyAccount.vue";
 import ShoppingCart from "./ShoppingCart.vue";
 import Sidebar from "./Sidebar.vue";

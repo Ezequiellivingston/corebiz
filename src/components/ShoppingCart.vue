@@ -1,6 +1,6 @@
 <template>
   <div ref="menu" class="shopping-cart">
-    <a class="shopping-cart__button" @click="isOpen = !isOpen">
+    <button aria-label="Menu carrito de comprar" :aria-expanded="isOpen" aria-controls="shopping_card_menu" class="shopping-cart__button" @click="isOpen = !isOpen">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -17,11 +17,11 @@
       <span v-if="shoppingCart.length > 0" class="shopping-cart--badge">
         {{ shoppingCart.length }}
       </span>
-    </a>
+    </button>
 
     <transition name="fade">
-      <div v-show="isOpen" class="shopping-cart__menu">
-        <button class="shopping-cart__close" @click="isOpen = false">
+      <div v-show="isOpen" class="shopping-cart__menu" id="shopping_card_menu">
+        <button aria-label="Cerrar menu de carrito de compras" class="shopping-cart__close" @click="isOpen = false">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -36,31 +36,34 @@
           </svg>
         </button>
 
-        <div
-          class="shopping-cart__product"
-          v-for="(item, index) in shoppingCart"
-          :key="index"
-        >
-          <picture>
-            <img class="shopping-cart__picture" :src="item.imageUrl" alt="" />
-          </picture>
-
-          <p class="shopping-cart__description">{{ item.productName }} :</p>
-
-          <p class="shopping-cart__list-price">
-            {{ item.quantity_to_buy }} X {{ formatCurrency(item.price) }}
-          </p>
-
-          <div
-            class="shopping-cart__remove"
-            @click="removeProductToShoppingCart(item.productId)"
+          <article
+            class="shopping-cart__product"
+            v-for="(item, index) in shoppingCart"
+            :key="index"
+            itemscope itemtype="https://schema.org/Product"
           >
-            <img
-              class="shopping-cart__icon-remove"
-              src="../assets/remove.svg"
-            />
-          </div>
-        </div>
+            <h4 class="shopping-cart__description" itemprop="name">{{ item.productName }} :</h4>
+
+            <p class="shopping-cart__list-price" itemprop="price" :content="formatCurrency(item.price)">
+              {{ item.quantity_to_buy }} X {{ formatCurrency(item.price) }}
+            </p>
+
+            <picture class="shopping-cart__image">
+              <img class="shopping-cart__picture" :src="item.imageUrl" itemprop="image" :alt="`Imagen del producto ${item.productName}`" />
+            </picture>
+
+            <picture
+              class="shopping-cart__remove"
+              @click="removeProductToShoppingCart(item.productId)"
+              aria-label="Eliminar producto del carrito de compras"
+            >
+              <img
+                class="shopping-cart__icon-remove"
+                src="../assets/remove.svg"
+                alt=""
+              />
+            </picture>
+          </article>
 
         <div v-if="shoppingCart.length > 0" class="shopping-cart__product--total">
           <span>TOTAL</span>
@@ -192,6 +195,9 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: 100%;
+}
+.shopping-cart__image {
+  order: -1;
 }
 .shopping-cart__list-price {
   font-weight: bold;

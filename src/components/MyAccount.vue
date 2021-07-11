@@ -1,6 +1,7 @@
 <template>
-  <a class="my-account">
+  <button class="my-account">
     <svg
+      aria-hidden
       xmlns="http://www.w3.org/2000/svg"
       width="16"
       height="16"
@@ -14,7 +15,7 @@
     </svg>
 
     Mi Cuenta
-  </a>
+  </button>
 </template>
 
 <script>

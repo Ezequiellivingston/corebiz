@@ -1,6 +1,8 @@
 import { readonly, reactive, ref, computed } from "vue";
 import ProductService from "../services/ProductService";
 
+// Recupera mapa de carrito de comprar de localstorage 
+// En caso de no existir crear uno vacio
 const shoppingCartDefault =
   JSON.parse(localStorage.getItem("shopping_cart")) || {};
 
@@ -23,6 +25,8 @@ export default () => {
     }
   };
 
+  // Incrementa +1 el producto en el mapa del carrito de compras
+  // En caso de no existir agrega el producto con la cantidad de 1
   const incrementProductToShoppingCart = (productId) => {
     let quantity = 1;
 
@@ -34,6 +38,8 @@ export default () => {
     localStorage.setItem("shopping_cart", JSON.stringify(shoppingCart));
   };
 
+  // Disminuye -1 el producto en el mapa del carrito de compras 
+  // En caso de tener 1 solo producto elimina este del carrito
   const decrementProductToShoppingCart = (productId) => {
     if (!shoppingCart.hasOwnProperty(productId)) return;
 

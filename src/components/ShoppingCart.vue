@@ -48,7 +48,7 @@
           <p class="shopping-cart__description">{{ item.productName }} :</p>
 
           <p class="shopping-cart__list-price">
-            {{ formatCurrency(item.price * item.quantity_to_buy) }}
+            {{ item.quantity_to_buy }} X {{ formatCurrency(item.price) }}
           </p>
 
           <div
@@ -61,13 +61,26 @@
             />
           </div>
         </div>
+
+        <div v-if="shoppingCart.length > 0" class="shopping-cart__product--total">
+          <span>TOTAL</span>
+          <span>{{ formatCurrency(total) }}</span>
+        </div>
+
+        <button v-if="shoppingCart.length > 0" class="shopping-cart__product--buy">
+          COMPRAR
+        </button>
+
+        <div v-if="shoppingCart.length === 0" class="shopping-cart__product--empty">
+          No tenes productos en tu carrito
+        </div>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 import useProducts from "../hooks/useProducts";
 
 export default {
@@ -76,6 +89,7 @@ export default {
     const menu = ref(null);
     const { shoppingCart } = useProducts();
     const { removeProductToShoppingCart } = useProducts();
+
     const handleClickOutsideElement = (e) => {
       e.stopPropagation();
       try {
@@ -93,12 +107,14 @@ export default {
         isOpen.value = false;
       }
     };
+
     const formatCurrency = (price) => {
       return new Intl.NumberFormat("es-AR", {
         style: "currency",
         currency: "ARS",
       }).format(price);
     };
+
     onMounted(() => {
       document.addEventListener("click", handleClickOutsideElement);
       document.addEventListener("keydown", handlePressEscElement);
@@ -109,6 +125,8 @@ export default {
       document.removeEventListener("keydown", handlePressEscElement);
     });
 
+    const total = computed(() => shoppingCart.value.map(p => p.price * p.quantity_to_buy).reduce((acc, el) => acc + el, 0))
+
     return {
       shoppingCart,
       isOpen,
@@ -116,6 +134,7 @@ export default {
       handleClickOutsideElement,
       formatCurrency,
       removeProductToShoppingCart,
+      total
     };
   },
 };
@@ -200,6 +219,25 @@ export default {
   position: absolute;
   top: -0.75rem;
   right: -0.75rem;
+  cursor: pointer;
+}
+.shopping-cart__product--empty{
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+.shopping-cart__product--total {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin-top: 1rem;
+}
+.shopping-cart__product--buy {
+  width: 100%;
+  background-color: var(--primary);
+  color: white;
+  padding: 1rem;
+  margin-top: 2rem;
   cursor: pointer;
 }
 </style>

@@ -1,8 +1,14 @@
-<template></template>
+<template>
+  <Navbar />
+</template>
 
 <script>
+import Navbar from "./components/Navbar.vue";
+
 export default {
-  components: {},
+  components: {
+    Navbar,
+  },
 
   setup() {
     return {};

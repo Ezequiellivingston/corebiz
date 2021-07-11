@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Nunito", sans-serif;
+}
+
+:root {
+  --swiper-theme-color: #f8475f;
+  --swiper-navigation-size: 24px;
+  --primary: #000000;
+  --secondary: #f8475f;
+  --background: #f2f2f2;
+}
